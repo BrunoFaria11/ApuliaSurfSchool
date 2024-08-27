@@ -1,0 +1,82 @@
+<section class="page-section" id="contact">
+    <div class="container px-4 px-lg-5">
+        <div class="row gx-4 gx-lg-5 justify-content-center">
+            <div class="col-lg-8 col-xl-6 text-center">
+                <h2 class="mt-0">{{languageStoreService.Texts.contacts.title}}</h2>
+                <hr class="divider" />
+                <p class="text-muted mb-5">{{languageStoreService.Texts.contacts.subTitle}}</p>
+            </div>
+        </div>
+        <div class="row gx-4 gx-lg-5 justify-content-center mb-5">
+            <div class="col-lg-6">
+                <form [formGroup]="angContactForm" (ngSubmit)="onClickSubmit(angContactForm.value)">
+                    <!-- Name input-->
+                    <div class="form-floating mb-3">
+                        <input class="form-control" formControlName="name" type="text" data-sb-validations="required" />
+                        <label for="name">{{ languageStoreService.Texts.contacts.field1 }}</label>
+                        <div class="invalid-feedback"
+                            *ngIf="angContactForm.controls?.['name']?.status === 'INVALID' && btnClicked">
+                            {{
+                            languageStoreService.Texts.contacts.field1 }} is required.</div>
+                    </div>
+                    <!-- Email address input-->
+                    <div class="form-floating mb-3">
+                        <input class="form-control" formControlName="email" type="text" data-sb-validations="required" />
+                        <label for="email2">{{ languageStoreService.Texts.contacts.field2 }}</label>
+                        <div class="invalid-feedback"
+                            *ngIf="angContactForm.controls?.['email']?.status === 'INVALID' && btnClicked">
+                            {{
+                            languageStoreService.Texts.contacts.field2 }} is required.</div>
+                    </div>
+                    <!-- Message input-->
+                    <div class="form-floating mb-3">
+                        <textarea class="form-control"  style="height: 10rem"  formControlName="message" type="text" data-sb-validations="required" ></textarea>
+                        <label for="message2">{{ languageStoreService.Texts.contacts.field3}}</label>
+                        <div class="invalid-feedback"
+                            *ngIf="angContactForm.controls?.['message']?.status === 'INVALID' && btnClicked">
+                            {{
+                            languageStoreService.Texts.contacts.field3 }} is required.</div>
+                    </div>
+                    <!-- Submit Button-->
+                    <div class="d-grid">
+                        <button type="button" class="btn btn-primary btn-xl" type="submit">
+                            {{languageStoreService.Texts.reservationForum.btn }}
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="row gx-4 gx-lg-5 mb-5 justify-content-center">
+            <div class="col-lg-4 text-center mb-5 mb-lg-0"
+                *ngFor="let item of languageStoreService.Texts.contacts.values">
+                <i [ngClass]="item.icon " class="fs-2 mb-3"></i>
+                <div>
+                    <p>{{item.value}}</p>
+                </div>
+            </div>
+        </div>
+        <div class="row gx-4 gx-lg-5 justify-content-center">
+            <div class="col-lg-1 text-center mb-5 mb-lg-0"
+                *ngFor="let item of languageStoreService.Texts.contacts.socialMedia.values">
+                <a href="{{item.link}}" target="_blank"> <i [ngClass]="item.icon " class="fs-2 mb-3"></i></a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="alert alert-success alert-dismissible fade show  d-sm-block d-md-block d-lg-none d-xl-none" role="alert" *ngIf="showAlertSuccess" style="position: fixed;top: 131px;width: 95%;z-index: 99999;">
+    <strong>{{languageStoreService.Texts.config.success.title }}</strong> {{languageStoreService.Texts.config.success.text }}
+</div>
+
+<div class="alert alert-danger alert-dismissible fade show  d-sm-block d-md-block d-lg-none d-xl-none" role="alert" *ngIf="showAlertError" style="position: fixed;top: 131px;width: 95%;z-index: 99999;">
+    <strong>{{languageStoreService.Texts.config.error.title }}</strong> {{languageStoreService.Texts.config.error.text }}
+</div>
+
+
+<div class="alert alert-success alert-dismissible fade show d-sm-none d-md-none d-lg-block d-xl-block" role="alert" *ngIf="showAlertSuccess" style="position: fixed;top: 131px;left: 62%;z-index: 99999;">
+    <strong>{{languageStoreService.Texts.config.success.title }}</strong> {{languageStoreService.Texts.config.success.text }}
+</div>
+
+<div class="alert alert-danger alert-dismissible fade show d-sm-none d-md-none d-lg-block d-xl-block" role="alert" *ngIf="showAlertError" style="position: fixed;top: 131px;left: 62%;z-index: 99999;">
+    <strong>{{languageStoreService.Texts.config.error.title }}</strong> {{languageStoreService.Texts.config.error.text }}
+</div>

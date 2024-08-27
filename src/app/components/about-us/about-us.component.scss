@@ -1,0 +1,25 @@
+.imageBox1 {
+    height: 500px;
+    width: 100%;
+    background-size: cover;
+    background-position: center;
+    border-radius: 10px;
+}
+
+.imageBox2 {
+    height: 400px;
+    width: 100%;
+    background-size: cover;
+    background-position: center;
+    border-radius: 10px;
+}
+
+.imageBox3 {
+    background-position-x: 42px;
+    background-position-y: -100px;
+    display: inline-block;
+    border-radius: 100%; 
+    width: 500px;
+    height: 500px;
+    background-size: cover;
+}

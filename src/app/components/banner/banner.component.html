@@ -1,0 +1,29 @@
+<header class="masthead"
+    [ngStyle]="{'background': 'linear-gradient(to bottom, #488c996e, #488c994d), url(' + languageStoreService.Texts.banner.image + ')'}">
+    <div class="container px-4 px-lg-5 h-100">
+        <div class="row gx-4 gx-lg-5 h-100 align-items-center justify-content-center text-center">
+            <div class="col-lg-10 align-self-end mt-md-5">
+                <h1 class="text-white font-weight-bold">{{languageStoreService.Texts.banner.text2}}</h1>
+            </div>
+            <div class="col-lg-10 align-self-baseline">
+                <p class="text-white-75 mb-5">{{languageStoreService.Texts.banner.text1}}</p>
+                <div class="btn-wave hovercursor">
+                    <a data-bs-toggle="modal" data-bs-target="#reservationModal">
+                        <span>{{languageStoreService.Texts.banner.btn}}</span>
+                        <div class="wave"></div>
+                    </a>
+                </div>
+            </div>
+            <div class="row ">
+                <div class="col-12 align-items-center justify-content-center text-center">
+                    <div class="align-items-center justify-content-center text-center">
+                        <small style="letter-spacing: 0.25em;text-align:center" class="text-white-75">Scroll</small>
+                        <div class="rev-scroll-wave mt-md-2">
+                            <div></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>

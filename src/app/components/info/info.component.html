@@ -1,0 +1,44 @@
+<div id="info">
+    <div class="container-fluid p-0">
+        <div class="row g-0">
+            <div class="col-3 d-sm-none d-md-none d-lg-block d-xl-block hovercursor"
+                *ngFor="let value of languageStoreService.Texts.info.values">
+                <a class="portfolio-box " [ngStyle]="{'background-image': 'url(' + value.image + ')'}"
+                    data-bs-toggle="modal" data-bs-target="#reservationModal">
+                    <div class="portfolio-box-caption"
+                        style="opacity: 1;align-items: baseline;padding-left: 20px;background-color: #6697a47a;justify-content: flex-start;padding-top: 25px;">
+                        <div class="project-name fs-1 py-2">{{value.title}}</div>
+                        <div class="py-2"><span class="badge fs-4">{{value.value}}</span></div>
+                        <div class="project-name text-white-75 py-4">{{value.info}}</div>
+                    </div>
+                </a>
+            </div>
+            <div class="col-3  d-sm-none d-md-block d-lg-none d-xl-none hovercursor"
+                *ngFor="let value of languageStoreService.Texts.info.values">
+                <a class="portfolio-box d-sm-none d-md-block d-lg-none d-xl-none"
+                    [ngStyle]="{'background-image': 'url(' + value.image + ')'}" data-bs-toggle="modal"
+                    data-bs-target="#reservationModal">
+                    <div class="portfolio-box-caption"
+                        style="opacity: 1;align-items: center;background-color: #6697a47a;justify-content: center;padding-top: 25px;">
+                        <div class="project-name fs-1 py-2">{{value.title}}</div>
+                        <div class="py-2"><span class="badge fs-4">{{value.value}}</span></div>
+                        <div class="project-name text-white-75 py-4">{{value.info}}</div>
+                    </div>
+                </a>
+            </div>
+            <div class="col-sm-6 d-sm-block d-md-none d-lg-none d-xl-none hovercursor"
+                *ngFor="let value of languageStoreService.Texts.info.values">
+                <a class="portfolio-box d-sm-block d-md-none d-lg-none d-xl-none"
+                    [ngStyle]="{'background-image': 'url(' + value.image + ')'}" data-bs-toggle="modal"
+                    data-bs-target="#reservationModal">
+                    <div class="portfolio-box-caption"
+                        style="opacity: 1;align-items: center;background-color: #6697a47a;justify-content: center;padding-top: 25px;">
+                        <div class="project-name py-2">{{value.title}}</div>
+                        <div class="py-2"><span class="badge fs-4">{{value.value}}</span></div>
+                        <div class="project-name text-white-75 py-4">{{value.info}}</div>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>

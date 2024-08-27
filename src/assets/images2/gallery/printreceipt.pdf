@@ -1,0 +1,131 @@
+
+<!-- saved from url=(0064)https://member5-8.smarterasp.net/account/printreceipt?id=2124599 -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=windows-1252"><style>
+* {
+	font-family:Arial, Helvetica, sans-serif;
+	font-size:12px
+}
+.name {
+	text-align:center;
+	font-size:50px;
+}
+.receipt_content {
+	width:540px;
+	margin:12px auto;
+}
+.bor {
+	border-top:2px #aaa dashed;
+	border-bottom:2px #aaa dashed
+}
+.bor .tb_receipt {
+	margin:12px 0 12px 0
+}
+.tb_receipt td {
+	padding:5px 8px
+}
+.receipt_title {
+	font-size:14px;
+	font-weight:bold;
+	color:#666
+}
+.total {
+	font-weight:bold;
+	line-height:23px
+}
+</style>
+</head><body><center>
+<div class="name">SmarterASP.NET</div>
+<p><a href="javascript:void(window.print())">Print</a>   <a href="https://member5-8.smarterasp.net/pdf/getreceipt.aspx?id=2124599&amp;xid=41D5D592A3D07EFADC044686B124E406">Download</a></p>
+
+<div class="receipt_content">
+	<table width="90%" border="0" align="center" cellpadding="0" cellspacing="0" class="tb_receipt">
+	  <tbody><tr>
+	    <td width="80"><strong>Receipt No:</strong></td>
+	    <td><strong>Order Date:</strong></td>
+	    <td><strong></strong></td>
+      </tr>
+	  <tr>
+	    <td>2124599</td>
+	    <td>7/8/2024 4:16:28 AM </td>
+	    <td></td>
+      </tr>
+    </tbody></table>
+</div>
+
+<div class="receipt_content bor">
+	<table width="90%" border="0" cellpadding="0" cellspacing="0" class="tb_receipt">
+      <tbody><tr>
+        <td class="receipt_title">BusinessICS Intl Limited (DBA SmarterASP.NET)</td>
+      </tr>
+      <tr>
+        <td>1455 Monterey Pass Road #204, Monterey Park, CA 91754 US</td>
+      </tr>
+    </tbody></table>
+</div>
+
+<div class="receipt_content">
+  <table width="90%" border="0" align="center" cellpadding="0" cellspacing="0" class="tb_receipt">
+	  <tbody><tr>
+	    <td width="80"><strong>Name: </strong></td>
+	    <td><strong>Address:</strong></td>
+	    <td><strong>City, State: </strong></td>
+	    <td><strong>Postal Code, Country:</strong></td>
+      </tr>
+	  
+	  <tr>
+	    <td>brunofaria1112</td>
+	    <td>NA</td>
+	    <td> NA,  </td>
+	    <td>0, US</td>
+      </tr>
+	  
+    </tbody></table>
+  <table width="90%" border="0" align="center" cellpadding="0" cellspacing="0" class="tb_receipt" style="margin-top:15px;">
+    <tbody><tr>
+      <td width="80" class="receipt_title">Paid By:</td>
+      <td>Paypal/Credit Card</td>
+    </tr>
+    </tbody></table>
+</div>
+
+<div class="receipt_content bor">
+  <table width="90%" border="0" cellspacing="0" cellpadding="0" class="tb_receipt">
+	  <tbody><tr>
+	    <td width="100"><strong>Account Name:</strong></td>
+		<td><strong>Product Name:</strong></td>
+	    <td><strong>Description:</strong></td>
+		<td><strong>Payment Term:</strong></td>
+	    <td><strong>Amount:</strong></td>
+	    <td><strong>Total:</strong></td>
+      </tr>
+	  <tr>
+		<td>brunofaria1112-001</td>
+	    <td>W1000-EU</td>
+	    <td>Advance .NET,  Unlimited Space, 6 free site, 6 MSSQL, 6 MySQL, 512 MB Memory</td>
+	    <td>annually</td>
+	    <td>$66.00</td>
+	    <td>$66.00</td>
+      </tr><tr>
+		<td>brunofaria1112</td>
+	    <td>SSL-S</td>
+	    <td>Comodo SSL Certificate - Single Domain or Subdomain</td>
+	    <td>annually</td>
+	    <td>$29.00</td>
+	    <td>$29.00</td>
+      </tr>
+    
+    </tbody></table>
+</div>
+
+<div class="receipt_content">
+	<div align="right" class="total">
+    	Subtotal: $95.00
+        <br>
+        Shipping &amp; Handling: $0.00
+        <br>
+        <u>Tax: $0.00</u>
+        <br>
+        Total (United States Dollars): $95.00
+    </div>
+</div>
+</center></body></html>
