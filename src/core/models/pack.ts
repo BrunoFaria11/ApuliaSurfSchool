@@ -1,9 +1,17 @@
 export class Pack {
-    constructor(ClassesUsed: number, Type: string) {
+    constructor(ClientId: string, TotalAvailableClasses: string, Date: string, Type: string, Time: string, Notes: string) {
+        this.ClientId = ClientId;
+        this.Date = Date;
         this.Type = Type;
-        this.ClassesUsed = ClassesUsed;
+        this.Time = Time;
+        this.Notes = Notes;
+        this.TotalAvailableClasses = TotalAvailableClasses;
     }
-    Type!: string;
-    ClassesUsed!: number;
-}
 
+    ClientId!: string;
+    TotalAvailableClasses!: string;
+    Date!: string;
+    Type!: string;
+    Time!: string;
+    Notes!: string;
+}

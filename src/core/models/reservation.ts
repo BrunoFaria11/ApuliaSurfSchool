@@ -1,13 +1,15 @@
 export class Reservation {
-    constructor(Date: string, Type: string, Hour: string, Comment: string) {
+    constructor(ClientId: string, Date: string, Type: string, Time: string, Notes: string) {
+        this.ClientId = ClientId;
         this.Date = Date;
         this.Type = Type;
-        this.Hour = Hour;
-        this.Comment = Comment;
+        this.Time = Time;
+        this.Notes = Notes;
     }
+
+    ClientId!: string;
     Date!: string;
     Type!: string;
-    Hour!: string;
-    Comment!: string;
+    Time!: string;
+    Notes!: string;
 }
-

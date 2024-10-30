@@ -1,14 +1,12 @@
 export class Email {
-    constructor(From: string, To: string, Message: string,Type:number) {
-        this.From = From;
-        this.To = To;
-        this.Message = Message;
-        this.Type = Type;
+    constructor(Email: string, Body: string, Name: string) {
+        this.Email = Email;
+        this.Body = Body;
+        this.Name = Name;
     }
-    From!: string;
-    To!: string;
-    Message!: string;
-    Type!: number;
+    Email!: string;
+    Body!: string;
+    Name!: string;
 }
 
 

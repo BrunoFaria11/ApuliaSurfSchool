@@ -1,187 +1,137 @@
-import { Component, ElementRef, Inject, OnInit, ViewChild } from '@angular/core';
-import { LanguageStoreService } from '../../../core/stores/language-store.service';
-import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import data from '../../../environments/phoneindicators.json';
 import { Reservation } from '../../../core/models/reservation';
-import { Client } from '../../../core/models/client';
-import { ReservationServices } from '../../../core/servies/reservation-services';
 import { Pack } from '../../../core/models/pack';
-import { DOCUMENT } from '@angular/common';
-import { EmailType } from '../../../core/enum/email-type';
-import { EmailServices } from '../../../core/servies/email-services';
-import { Email } from '../../../core/models/email';
-import { environment } from '../../../environments/environment';
+import { ReservationService } from '../../../core/servies/reservation-service';
+import { ClientService } from '../../../core/servies/client-service';
+import { PackService } from '../../../core/servies/pack-service';
+import { LanguageStoreService } from '../../../core/stores/language-store.service';
+import { Client } from '../../../core/models/client';
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
-  styleUrl: './home.component.scss'
+  styleUrl: './home.component.scss',
 })
-
 export class HomeComponent implements OnInit {
   minDate: string = this.formatDate(new Date());
   angForm!: FormGroup;
-  btnClicked = false;
-  time = 'morning';
+  isButtonClicked = false;
+  timeOfDay = 'morning';
   showAlertSuccess = false;
   showAlertError = false;
-  isCollapsed: boolean = false;
+  isCollapsed = false;
+  listPhoneIndicators: any = data;
 
   constructor(
     public languageStoreService: LanguageStoreService,
-    public reservationServices: ReservationServices,
-    public emailServices: EmailServices,
-    private fb: FormBuilder,
+    private formBuilder: FormBuilder,
+    private reservationService: ReservationService,
+    private clientService: ClientService,
+    private packService: PackService
   ) {
-    this.createForm();
+    this.initializeForm();
   }
 
   ngOnInit(): void { }
 
-  createForm() {
-    this.angForm = this.fb.group({
+  initializeForm() {
+    this.angForm = this.formBuilder.group({
       name: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
-      phone: [
-        '',
-        [
-          Validators.required,
-          Validators.pattern(
-            '^[+]?[(]?[0-9]{3}[)]?[-s.]?[0-9]{3}[-s.]?[0-9]{4,6}$'
-          ),
-          Validators.minLength(5),
-        ],
-      ],
+      phone: ['', [Validators.required, Validators.pattern('^[- +()0-9]+$'), Validators.minLength(5)]],
+      phoneIndicator: ['+351', Validators.required],
       hour: ['morning'],
       classDate: ['', Validators.required],
       type: ['', Validators.required],
-      // password: ['', [this.customValidatorFn(),this.customValidatorPasswordFn(), Validators.pattern('/(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@$!%*#?&^_-]).{8,}/')]],
-      // confirmpassword: ['', [this.customValidatorFn(),this.customValidatorPasswordFn(), Validators.pattern('/(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@$!%*#?&^_-]).{8,}/')]],
       comments: [''],
     });
   }
 
-  // private customValidatorFn(): ValidatorFn {
-  //   return (control: AbstractControl): ValidationErrors | null => {
-  //     debugger
-  //     return this.isCollapsed && (control.value == null  || control.value  || undefined || control.value == '' )? { require: true } : null;
-  //   };
-  // }
+  onSubmitForm() {
+    this.isButtonClicked = true;
+    if (this.angForm.valid) {
+      const formData = this.angForm.value;
+      const selectedType = formData.type;
+      formData.phone = formData.phoneIndicator + formData.phone;
 
-  // private customValidatorPasswordFn(): ValidatorFn {
-  //   return (control: AbstractControl): ValidationErrors | null => {
-  //     if(this.angForm != null)
-  //     {
-  //       const model = this.angForm.value;
-  //       return model.password == model.confirmpassword ? null : { Error: 'Must be equal' };
-  //     }
-  //     else{
-  //       return null;
-  //     } 
-  //   };
-  // }
-
-  onClickSubmit(data: any) {
-    this.btnClicked = true;
-    if (this.angForm.status == "VALID") {
-      const model = this.angForm.value;
-      const _type = JSON.parse(model.type);
-      let reservation = new Reservation(model.classDate, _type.type, this.time, model.comments);
-      let client = new Client(model.name, model.email, model.phone);
-      if (!_type.isPack) {
-        this.reservationServices.addReservation(reservation, client).subscribe((response: any) => {
-          if (!response.succeeded) {
-            this.showAlertError = true;
-            this.clearForm();
-
-            this.emailServices.getEmailTemplate(EmailType.Reservations).subscribe((response: any) => {
-              var temp = response.data.template.replace('[NAME]', model.name);
-              temp = temp.replace('[EMAIL]', model.email);
-              temp = temp.replace('[PHONE]', model.phone);
-              temp = temp.replace('[DATE]', model.classDate);
-              temp = temp.replace('[TYPE]', _type.type);
-              temp = temp.replace('[TIME]', model.hour);
-              temp = temp.replace('[COMMENTS]', model.comments);
-
-              let email = new Email(environment.fromEmail, environment.toEmail, temp, EmailType.Contact);
-
-              this.emailServices.addEmail(email);
-
-            })
-
-            setTimeout(() => {
-              this.showAlertError = false;
-            }, 5000);
-          }
+      const client = new Client(formData.name, formData.email, formData.phone);
+      this.clientService.createClient(client).subscribe({
+        next: (response: any) => {
           if (response.succeeded) {
-            this.showAlertSuccess = true;
-            this.clearForm();
-            setTimeout(() => {
-              this.showAlertSuccess = false;
-            }, 3000);
+            this.handleReservationOrPack(response.data.uuid, formData, selectedType);
+          } else {
+            this.handleError();
           }
-        })
-      }
-      else {
-        let pack = new Pack(1, _type.type);
-        this.reservationServices.addPack(pack, reservation, client).subscribe((response: any) => {
-          if (!response.succeeded) {
-            this.showAlertError = true;
-            this.clearForm();
-
-            this.emailServices.getEmailTemplate(EmailType.Reservations).subscribe((response: any) => {
-                var temp = response.data.template.replace('[NAME]', model.name);
-              temp = temp.replace('[EMAIL]', model.email);
-              temp = temp.replace('[PHONE]', model.phone);
-              temp = temp.replace('[DATE]', model.classDate);
-              temp = temp.replace('[TYPE]', _type.type);
-              temp = temp.replace('[TIME]', model.hour);
-              temp = temp.replace('[COMMENTS]', model.comments);
-
-              let email = new Email(environment.fromEmail, environment.toEmail, temp, EmailType.Contact);
-
-              this.emailServices.addEmail(email);
-            })
-
-            setTimeout(() => {
-              this.showAlertError = false;
-            }, 5000);
-
-          }
-          if (response.succeeded) {
-            this.showAlertSuccess = true;
-            this.clearForm();
-            setTimeout(() => {
-              this.showAlertSuccess = false;
-            }, 3000);
-          }
-        })
-      }
-    };
-  }
-
-  clearForm() {
-    this.btnClicked = false;
-    (<HTMLInputElement>document.getElementById("closeModal")).click();
-    this.angForm.reset();
-  }
-
-  changeTime(e: any) {
-    this.time = e.target.value;
+        },
+        error: () => this.handleError(),
+      });
+    }
   }
 
   convertJSON(data: any) {
     return JSON.stringify(data);
   }
 
-  formatDate(date: Date) {
-    return [
-      date.getFullYear(),
-      this.padTo2Digits(date.getMonth() + 1),
-      this.padTo2Digits(date.getDate() + 1),
-    ].join('-');
+  handleReservationOrPack(clientId: string, formData: any, selectedType: any) {
+    if (!JSON.parse(selectedType).isPack) {
+      const reservation = new Reservation(clientId, formData.classDate, JSON.parse(selectedType).type, this.timeOfDay, formData.comments);
+      this.createReservation(reservation);
+    } else {
+      const pack = new Pack(clientId, JSON.parse(selectedType).max, formData.classDate, JSON.parse(selectedType).type, this.timeOfDay, formData.comments);
+      this.createPack(pack);
+    }
   }
 
-  padTo2Digits(num: number) {
+  createReservation(reservation: Reservation) {
+    this.reservationService.createReservation(reservation).subscribe({
+      next: (response: any) => response.succeeded ? this.handleSuccess() : this.handleError(),
+      error: () => this.handleError(),
+    });
+  }
+
+  createPack(pack: Pack) {
+    this.packService.createPack(pack).subscribe({
+      next: (response: any) => response.succeeded ? this.handleSuccess() : this.handleError(),
+      error: () => this.handleError(),
+    });
+  }
+
+  handleSuccess() {
+    this.showAlertSuccess = true;
+    this.resetForm();
+    this.hideAlertAfterDelay('success');
+  }
+
+  handleError() {
+    this.showAlertError = true;
+    this.resetForm();
+    this.hideAlertAfterDelay('error');
+  }
+
+  resetForm() {
+    this.isButtonClicked = false;
+    document.getElementById("closeModal")?.click();
+    this.angForm.reset();
+  }
+
+  hideAlertAfterDelay(alertType: 'success' | 'error') {
+    const delay = 6000;
+    setTimeout(() => {
+      this[alertType === 'success' ? 'showAlertSuccess' : 'showAlertError'] = false;
+    }, delay);
+  }
+
+  changeTime(event: any) {
+    this.timeOfDay = event.target.value;
+  }
+
+  formatDate(date: Date): string {
+    return [date.getFullYear(), this.padTo2Digits(date.getMonth() + 1), this.padTo2Digits(date.getDate() + 1)].join('-');
+  }
+
+  padTo2Digits(num: number): string {
     return num.toString().padStart(2, '0');
   }
 }

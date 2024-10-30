@@ -1,10 +1,8 @@
 import { Component } from '@angular/core';
 import { LanguageStoreService } from '../../../core/stores/language-store.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { EmailServices } from '../../../core/servies/email-services';
 import { Email } from '../../../core/models/email';
-import { environment } from '../../../environments/environment';
-import { EmailType } from '../../../core/enum/email-type';
+import { EmailService } from '../../../core/servies/email-service';
 
 @Component({
   selector: 'app-contact',
@@ -19,7 +17,7 @@ export class ContactComponent {
 
   constructor(
     public languageStoreService: LanguageStoreService,
-    public emailServices: EmailServices,
+    public emailServices: EmailService,
     private fb: FormBuilder,
   ) {
     this.createForm();
@@ -36,31 +34,26 @@ export class ContactComponent {
   onClickSubmit(data: any) {
     this.btnClicked = true;
     if (this.angContactForm.status == "VALID") {
-      this.emailServices.getEmailTemplate(EmailType.Contact).subscribe((response: any) => {
-        const model = this.angContactForm.value;
 
-        var temp = response.data.template.replace('[NAME]',model.name);
-        temp = temp.replace('[FROM]',model.email);
-        temp = temp.replace('[MESSAGE]',model.message);
+      const formData = this.angContactForm.value;
 
-        let email = new Email(environment.fromEmail, environment.toEmail, temp, EmailType.Contact);
-        
-        this.emailServices.addEmail(email).subscribe((response: any) => {
-          if (!response.succeeded) {
-            this.showAlertError = true;
-            this.clearForm();
-            setTimeout(() => {
-              this.showAlertError = false;
-            }, 5000);
-          }
-          if (response.succeeded) {
-            this.showAlertSuccess = true;
-            this.clearForm();
-            setTimeout(() => {
-              this.showAlertSuccess = false;
-            }, 3000);
-          }
-        })
+      let email = new Email(formData.email, formData.message, formData.name);
+
+      this.emailServices.createEmail(email).subscribe((response: any) => {
+        if (!response.succeeded) {
+          this.showAlertError = true;
+          this.clearForm();
+          setTimeout(() => {
+            this.showAlertError = false;
+          }, 5000);
+        }
+        if (response.succeeded) {
+          this.showAlertSuccess = true;
+          this.clearForm();
+          setTimeout(() => {
+            this.showAlertSuccess = false;
+          }, 3000);
+        }
       });
     }
   }
